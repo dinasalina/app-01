@@ -11,6 +11,11 @@
                 <div class="p-6 text-blue-900">
                     <h3 class="text-lg font-semibold mb-4">{{ __("User Management") }}</h3>
 
+                    <a href="{{ route('users.create') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 mb-4 inline-block">
+                        + Tambah Pengguna
+                    </a>
+
+
                     <div class="overflow-x-auto">
 
                         

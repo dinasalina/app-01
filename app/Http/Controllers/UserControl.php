@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\Auth\UpdateUserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Auth\StoreUserRequest;
+use App\Http\Requests\Auth\UpdateUserRequest;
 
 class UserControl extends Controller
 {
@@ -29,16 +30,24 @@ class UserControl extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(StoreUserRequest $request)
+{
+    $validated = $request->validated();
+
+    User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+    ]);
+
+    return redirect()->route('users.index')->with('success', 'User created successfully.');
+}
 
     /**
      * Display the specified resource.
