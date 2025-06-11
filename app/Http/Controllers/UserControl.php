@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\Auth\UpdateUserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserControl extends Controller
 {
@@ -59,10 +61,21 @@ class UserControl extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+   public function update(UpdateUserRequest $request, User $user)
+{
+    $validated = $request->validated();
+
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+
+    if (!empty($validated['password'])) {
+        $user->password = Hash::make($validated['password']);
     }
+
+    $user->save();
+
+    return redirect()->route('users.edit', $user->id)->with('success', 'User updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.
